@@ -1,7 +1,7 @@
 export type Methods =
   | 'get'
   | 'GET'
-  | 'delele'
+  | 'delete'
   | 'DELETE'
   | 'head'
   | 'HEAD'
@@ -18,5 +18,19 @@ export interface AxiosRequestConfig {
   url: string
   method?: Methods
   data?: any
-  params: any
+  params?: any
+  headers?: any
+  timeout?: number
+  responseType?: XMLHttpRequestResponseType
 }
+
+export interface AxiosResponse {
+  data: any
+  status: number
+  statusText: string
+  headers: any
+  config: AxiosRequestConfig
+  request: any
+}
+
+export interface AxiosPromise extends Promise<AxiosResponse> {}
