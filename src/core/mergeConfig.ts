@@ -1,4 +1,5 @@
 import { AxiosRequestConfig } from '../types'
+import { isPlainObject, _deepMerge } from '../helpers/util'
 
 // strats是个mapping，映射不同的参数对应的merge方式
 const strats = Object.create(null)
@@ -11,10 +12,28 @@ function fromVal2Merge(val1: any, val2: any): any {
   if (typeof val2 !== 'undefined') return val2
 }
 
+function deepMerge(val1: any, val2: any): any {
+  if (isPlainObject(val2)) {
+    return _deepMerge(val1, val2)
+  } else if (val2 !== 'undefined') {
+    return val2
+  } else if (isPlainObject(val1)) {
+    return _deepMerge(val1)
+  } else if (typeof val1 !== 'undefined') {
+    return val1
+  }
+}
+
 const KeysFromVal2 = ['url', 'params', 'data']
+
+const keysDeepMerge = ['headers']
 
 KeysFromVal2.forEach(key => {
   strats[key] = fromVal2Merge
+})
+
+keysDeepMerge.forEach(key => {
+  strats[key] = deepMerge
 })
 
 export default function mergeConfig(

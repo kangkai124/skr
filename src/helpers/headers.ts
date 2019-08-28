@@ -1,4 +1,5 @@
-import { isPlainObject } from './util'
+import { isPlainObject, _deepMerge } from './util'
+import { Methods } from '../types'
 
 function normalizeHeaderName(headers: any, normalizedName: string): void {
   if (!headers) return
@@ -44,4 +45,53 @@ export function parseHeaders(headers: string): any {
   })
 
   return parsed
+}
+
+/**
+ *
+ * @param headers
+ * @param method
+ *
+ * @example
+ *
+ * headers: {
+ *  common: {
+ *    Accept: 'application/json, text/plain'
+ *  },
+ *  post: {
+ *    'Content-Type': 'application/x-www-form-urlencoded'
+ *  }
+ * }
+ *
+ * ========>
+ *
+ * headers: {
+ *   Accept: 'application/json, text/plain',
+ *   'Content-Type': 'application/x-www-form-urlencoded'
+ * }
+ *
+ */
+
+export function flattenHeaders(headers: any, method: Methods): any {
+  if (!headers) return headers
+
+  headers = _deepMerge(headers.common, headers[method], headers)
+
+  const methodToDelete = [
+    'delete',
+    'get',
+    'head',
+    'options',
+    'post',
+    'put',
+    'patch',
+    'common'
+  ]
+
+  methodToDelete.forEach(method => {
+    // delete headers[method]
+    Reflect.deleteProperty(headers, method)
+  })
+
+  return headers
 }

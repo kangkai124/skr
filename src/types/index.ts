@@ -1,3 +1,5 @@
+import { transformRequest } from '../helpers/data'
+
 export type Methods =
   | 'get'
   | 'GET'
@@ -22,6 +24,8 @@ export interface AxiosRequestConfig {
   headers?: any
   timeout?: number
   responseType?: XMLHttpRequestResponseType
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
 
   // 后面 mergeConfig 时，合并参数需要设置字符串索引  ==> @/core/mergeConfig.ts   mergeField()函数体内
   [propName: string]: any
@@ -100,4 +104,8 @@ export interface ResolvedFn<T> {
 
 export interface RejectedFn {
   (err: any): any
+}
+
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
 }

@@ -8,6 +8,7 @@ import {
 } from '../types'
 import dispatchRequest from './dispatchRequest'
 import InterceptorManager from './interceptorManager'
+import mergeConfig from './mergeConfig'
 
 interface Interceptors {
   request: InterceptorManager<AxiosRequestConfig>
@@ -39,6 +40,7 @@ export default class Axios {
     } else {
       config = url
     }
+    config = mergeConfig(this.defaults, config)
 
     // 初始时，chain里只有一个发送请求的事件，然后遍历request和response的拦截器，
     // request的使用unshift放在dispatchRequest前面，
@@ -58,7 +60,6 @@ export default class Axios {
     this.interceptors.response.forEach(interceptor => {
       chain.push(interceptor)
     })
-
     let promise = Promise.resolve(config)
 
     // 链式调用
