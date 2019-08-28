@@ -20,9 +20,11 @@ interface PromiseChain<T> {
 }
 
 export default class Axios {
+  defaults: AxiosRequestConfig
   interceptors: Interceptors
 
-  constructor() {
+  constructor(initConfig: AxiosRequestConfig) {
+    this.defaults = initConfig
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(),
       response: new InterceptorManager<AxiosResponse>()
@@ -38,6 +40,10 @@ export default class Axios {
       config = url
     }
 
+    // 初始时，chain里只有一个发送请求的事件，然后遍历request和response的拦截器，
+    // request的使用unshift放在dispatchRequest前面，
+    // response的使用push放在dispatchRequest后面，
+    // 这样就组成了链
     const chain: PromiseChain<any>[] = [
       {
         resolved: dispatchRequest,

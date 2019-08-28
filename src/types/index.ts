@@ -22,6 +22,9 @@ export interface AxiosRequestConfig {
   headers?: any
   timeout?: number
   responseType?: XMLHttpRequestResponseType
+
+  // 后面 mergeConfig 时，合并参数需要设置字符串索引  ==> @/core/mergeConfig.ts   mergeField()函数体内
+  [propName: string]: any
 }
 
 export interface AxiosResponse<T = any> {
@@ -44,6 +47,7 @@ export interface AxiosError extends Error {
 }
 
 export interface Axios {
+  defaults: AxiosRequestConfig
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>
     response: AxiosInterceptorManager<AxiosResponse>
