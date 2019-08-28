@@ -34,6 +34,9 @@ import qs from 'qs'
 // }).then((res) => {
 //   console.log(res.data)
 // })
+// .catch(err => {
+//   console.log(err);
+// })
 
 const instance = axios.create({
   transformRequest: [(function(data) {
@@ -55,4 +58,6 @@ instance({
   }
 }).then((res) => {
   console.log(res.data)
+}).catch(err => {
+  console.error(err);
 })

@@ -126,6 +126,8 @@
     "body-parser": "^1.18.3"
   },
   "dependencies": {
+    "connect-multiparty": "^2.2.0",
+    "cookie-parser": "^1.4.4",
     "qs": "^6.8.0"
   }
 }

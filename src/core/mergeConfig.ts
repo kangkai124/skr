@@ -13,9 +13,10 @@ function fromVal2Merge(val1: any, val2: any): any {
 }
 
 function deepMerge(val1: any, val2: any): any {
+  console.log(val1, val2)
   if (isPlainObject(val2)) {
     return _deepMerge(val1, val2)
-  } else if (val2 !== 'undefined') {
+  } else if (typeof val2 !== 'undefined') {
     return val2
   } else if (isPlainObject(val1)) {
     return _deepMerge(val1)
@@ -49,7 +50,9 @@ export default function mergeConfig(
   }
 
   for (let key in config1) {
-    if (!config[key]) mergeField(key)
+    if (!config[key]) {
+      mergeField(key)
+    }
   }
 
   function mergeField(key: string): void {

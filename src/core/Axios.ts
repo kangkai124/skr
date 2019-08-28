@@ -41,6 +41,7 @@ export default class Axios {
       config = url
     }
     config = mergeConfig(this.defaults, config)
+    console.log(config)
 
     // 初始时，chain里只有一个发送请求的事件，然后遍历request和response的拦截器，
     // request的使用unshift放在dispatchRequest前面，
